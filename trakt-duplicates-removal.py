@@ -1,14 +1,25 @@
 import json
 import requests
 
+print("- Go register a new API app at: https://trakt.tv/oauth/applications/new")
+print("- Fill the form with these details:")
+print("\tName: trakt-duplicates-removal")
+print("\tRedirect URI: urn:ietf:wg:oauth:2.0:oob")
+print("\tYou don't need to fill the other fields.")
+print("  Leave the app's page open.")
+
 # Edit the informations bellow
-client_id = 'YOUR CLIENT ID'
-client_secret = 'YOUR CLIENT SECRET'
-username = 'YOUR USERNAME'
+client_id = input("- Enter your client ID: ")
+client_secret = input("- Enter your client secret: ")
+username = input("- Enter your username: ")
 
 # Optional
-types = ['movies', 'episodes']  # 'movies' or 'episodes' or both
-keep_per_day = False        # set to True to keep one entry per day
+types = []
+if input("- Include movies? (yes/no): ").strip().lower() == 'yes':
+    types.append('movies')
+if input("- Include episodes? (yes/no): ").strip().lower() == 'yes':
+    types.append('episodes')
+keep_per_day = input("- Keep one entry per day? (yes/no): ").strip().lower() == 'yes'
 
 
 # Don't edit the informations bellow
@@ -22,11 +33,11 @@ session = requests.Session()
 
 def login_to_trakt():
     print('Authentication')
-    print('Open the link in a browser and paste the pin')
+    print('Open the link in a browser and paste the PIN')
     print('https://trakt.tv/oauth/authorize?response_type=code&client_id=%s&redirect_uri=urn:ietf:wg:oauth:2.0:oob' % client_id)
     print('')
 
-    pin = str(input('Pin: '))
+    pin = str(input('PIN: '))
 
     session.headers.update({
         'Accept': 'application/json',
